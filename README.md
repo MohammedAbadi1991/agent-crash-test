@@ -106,8 +106,9 @@ not a finding.
 
 ## The site as an agentic website
 
-- `site/agent-manifest.json` publishes one network, `agent_crash_test`, with the front
-  agent `crash_test_guide`.
+- `site/agent-manifest.json` publishes one network, `agent_crash_test`, with two agents:
+  the front agent `crash_test_guide`, and `report_analyst`, which it asks to read and
+  compare reports.
 - On the page, the agent has three site actions: `get_page_state` (read),
   `run_demo_crash_test` (write, a dry run on a demo shop) and `get_report` (read).
 - Other agentic websites can call the network. Run in their visitor's browser, it reads

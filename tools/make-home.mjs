@@ -51,13 +51,26 @@ async function hocon() {
   t.replace(`- TODO: name the specialist agent for each job it owns, or delete this line.\n`,
     `- For what the test is, how to run it, what an outcome means or how to fix a site, read website_get_page_state and answer from it. Give the script tag or console line exactly as it appears there.
 - To run the test on a demo shop, call website_run_demo_crash_test when it is offered. It shows the report on the page. Then explain the result in a few lines: which actions ran without asking, which asked first, and which labels to check.
-- To explain or compare earlier results, call website_get_report for each shop.
+- To explain a report in depth or compare the two shops, ask report_analyst. Tell it which shop or shops, and what the visitor wants to know. It cannot see this chat. Pass on its findings.
 - If website_run_demo_crash_test is not among your tools, another site called you: say the demo runs on the Agent Crash Test page and give its link.
+- Keep answers short: a few lines, or one small Markdown table for a list of actions. Do not call render_cruse for a report or a comparison; the page already shows each report.
 - Name actions exactly as the tools return them. An outcome of ran-without-asking for a read is normal; for a write it is what the owner should look at.\n`);
   t.replace(`- TODO: for each partner site, say what to ask it, such as "For bike rentals, ask <partner_tool> what it offers and how to book." Delete this line if the site calls no partner sites.\n`, ``);
   t.replace(`{partner_rules}\n`, ``);
-  const specialist = t.text.indexOf("        # Optional specialist.");
-  t.text = t.text.slice(0, specialist).replace(/,\s*$/, "\n") + t.text.slice(t.text.lastIndexOf("    ]"));
+  // The front agent delegates report reading to the specialist.
+  t.replace(`{cruse_rules}
+""",
+            # Partner sites only: each partner's exact network URL, as in link_labels.
+            "tools": []`, `{cruse_rules}
+""",
+            "tools": ["report_analyst"]`);
+  t.replace(`"<specialist_name>"`, `"report_analyst"`);
+  t.replace(`"TODO: the one job this specialist does, so the front agent knows when to call it."`, `"Reads the stored crash-test report of one or both demo shops and returns the findings: which actions ran without asking, which asked first, which labels to check, and the fix. Call it to explain a report in depth or to compare the two shops."`);
+  t.replace(`You help the {site_name} assistant with TODO.`, `You help the {site_name} assistant read crash-test reports.`);
+  t.replace(`- TODO: which website_* tools are this agent's job. Their descriptions say when to call them.`, `- Call website_get_report for each shop the request names (weak, fixed, or both). If a report is missing, say so and say the test must be run on that shop first. Do not call website_run_demo_crash_test yourself.
+- For each report, list every action with its label and outcome, then the actions with a hint. When comparing, say which actions changed outcome between the shops and that only their labels differ.
+- For what an outcome means or how to fix a label, read website_get_page_state.
+- Never call render_cruse: your answer is read by the assistant, not shown. Answer in at most twelve short lines of plain text.`);
   t.text = t.text.replace(/\n            # Partner sites only: each partner's exact network URL, as in link_labels\./, "");
   return t.text;
 }

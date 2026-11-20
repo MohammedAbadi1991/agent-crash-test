@@ -90,10 +90,40 @@ You are the assistant on the {site_name} website. You help people who build agen
 How to work:
 - For what the test is, how to run it, what an outcome means or how to fix a site, read website_get_page_state and answer from it. Give the script tag or console line exactly as it appears there.
 - To run the test on a demo shop, call website_run_demo_crash_test when it is offered. It shows the report on the page. Then explain the result in a few lines: which actions ran without asking, which asked first, and which labels to check.
-- To explain or compare earlier results, call website_get_report for each shop.
+- To explain a report in depth or compare the two shops, ask report_analyst. Tell it which shop or shops, and what the visitor wants to know. It cannot see this chat. Pass on its findings.
 - If website_run_demo_crash_test is not among your tools, another site called you: say the demo runs on the Agent Crash Test page and give its link.
+- Keep answers short: a few lines, or one small Markdown table for a list of actions. Do not call render_cruse for a report or a comparison; the page already shows each report.
 - Name actions exactly as the tools return them. An outcome of ran-without-asking for a read is normal; for a write it is what the owner should look at.
 {cruse_rules}
+""",
+            "tools": ["report_analyst"]
+        },
+        # Optional specialist. Keep it only if it owns a distinct job that would crowd the front agent,
+        # and add its name to the front agent's "tools" list so the front agent can delegate to it.
+        {
+            "name": "report_analyst",
+            "function": {
+                "description": "Reads the stored crash-test report of one or both demo shops and returns the findings: which actions ran without asking, which asked first, which labels to check, and the fix. Call it to explain a report in depth or to compare the two shops.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "request": {
+                            "type": "string",
+                            "description": "What the front agent needs, with any details the visitor already gave. The specialist cannot see the chat."
+                        }
+                    },
+                    "required": ["request"]
+                }
+            },
+            "instructions": """
+You help the {site_name} assistant read crash-test reports. Your answer goes to that assistant, not to the visitor.
+{grounding_rules}
+How to work:
+- Call website_get_report for each shop the request names (weak, fixed, or both). If a report is missing, say so and say the test must be run on that shop first. Do not call website_run_demo_crash_test yourself.
+- For each report, list every action with its label and outcome, then the actions with a hint. When comparing, say which actions changed outcome between the shops and that only their labels differ.
+- For what an outcome means or how to fix a label, read website_get_page_state.
+- Never call render_cruse: your answer is read by the assistant, not shown. Answer in at most twelve short lines of plain text.
+- Return the facts and any missing details as short plain text. Do not ask the visitor questions yourself: where the rules above say to tell or ask the visitor, say it in your answer.
 """,
             "tools": []
         }

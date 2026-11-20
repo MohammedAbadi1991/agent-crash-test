@@ -18,10 +18,15 @@ output() {
 BUCKET="$(output BucketName)"
 
 # Network sources and notes stay in the repository; the site serves the built files.
+# Every file is uploaded again with "no-cache", so browsers check each one before using
+# it and a visitor never runs a mix of old and new files after an update.
 aws s3 sync "$SITE" "s3://$BUCKET" --region "$REGION" --delete \
   --exclude "*.hocon" --exclude "*.md" --only-show-errors
+aws s3 cp "$SITE" "s3://$BUCKET" --region "$REGION" --recursive \
+  --exclude "*.hocon" --exclude "*.md" --cache-control "no-cache" --only-show-errors
 # The AWS CLI does not know .mjs, and a browser refuses a module without a JavaScript type.
 aws s3 cp "$SITE" "s3://$BUCKET" --region "$REGION" --recursive \
-  --exclude "*" --include "*.mjs" --content-type "text/javascript; charset=utf-8" --only-show-errors
+  --exclude "*" --include "*.mjs" --content-type "text/javascript; charset=utf-8" \
+  --cache-control "no-cache" --only-show-errors
 
 echo "Site: $(output SiteUrl)"

@@ -1,0 +1,18 @@
+{
+  "protocol": "nsdeploy-link/v1",
+  "exports": [
+    {
+      "network": "corner_shop_weak",
+      "front_man": "shop_assistant",
+      "aliases": [
+        "corner_shop_weak",
+        "shop_assistant"
+      ],
+      "url": "corner_shop_weak"
+    }
+  ],
+  "imports": [],
+  "link_updates": {
+    "mode": "browser-local"
+  }
+}

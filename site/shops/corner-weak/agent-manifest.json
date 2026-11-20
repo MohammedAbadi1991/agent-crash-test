@@ -1,0 +1,82 @@
+{
+  "brand": "Corner Shop (weak labels) Assistant",
+  "networks": [
+    {
+      "name": "corner_shop_weak",
+      "front_man": "shop_assistant",
+      "hocon": "./corner_shop_weak.network.json",
+      "description": "Ask about groceries and prices, fill the cart, and manage the demo account.",
+      "tags": [
+        "agentified-website",
+        "demo",
+        "crash-test-target"
+      ],
+      "sample_queries": [
+        "What do you sell, and how many loyalty points do I have?",
+        "Add two bags of coffee and a jar of honey to my cart.",
+        "Place my order.",
+        "Do you have a coupon for me, and can you track my last order?"
+      ]
+    }
+  ],
+  "llm_router": {
+    "base_url": "https://api.otari.ai/api/v1",
+    "mock": false,
+    "byok_router": "https://api.otari.ai/api/v1"
+  },
+  "allowed_peers": [],
+  "peer_policy": {
+    "mode": "closed",
+    "deny_origins": [],
+    "note": "Local agents and page-local actions only."
+  },
+  "agent_mcp": {
+    "protocol": "nsdeploy-agent-mcp/v1",
+    "network": "corner_shop_weak",
+    "front_man": "shop_assistant",
+    "available": false,
+    "reason": "This is a static bundle; a public MCP facade requires an application host."
+  },
+  "theme": {
+    "primary": "#2f5d50"
+  },
+  "linking": {
+    "protocol": "nsdeploy-link/v1",
+    "exports": [
+      {
+        "network": "corner_shop_weak",
+        "front_man": "shop_assistant",
+        "aliases": [
+          "corner_shop_weak",
+          "shop_assistant"
+        ],
+        "url": "corner_shop_weak"
+      }
+    ],
+    "imports": [],
+    "link_updates": {
+      "mode": "browser-local"
+    }
+  },
+  "deployment": {
+    "mode": "static",
+    "self_contained_runtime": true,
+    "browser_mock": false,
+    "direct_byok": true,
+    "direct_mcp_requires_cors": true,
+    "public_mcp_facade": false
+  },
+  "actions": {
+    "version": 1,
+    "module": "./site-actions.js",
+    "bridge": "./bridge/action-bridge.html",
+    "agentTools": [
+      "get_shop_state",
+      "add_to_cart",
+      "set_delivery_address",
+      "send_gift_card",
+      "email_order_history",
+      "place_order"
+    ]
+  }
+}

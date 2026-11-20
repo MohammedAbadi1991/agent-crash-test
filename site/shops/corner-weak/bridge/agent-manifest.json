@@ -1,0 +1,10 @@
+{
+  "networks": [
+    {
+      "name": "corner_shop_weak"
+    }
+  ],
+  "actions": {
+    "version": 1
+  }
+}

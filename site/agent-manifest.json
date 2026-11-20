@@ -1,0 +1,81 @@
+{
+  "brand": "Agent Crash Test",
+  "networks": [
+    {
+      "name": "agent_crash_test",
+      "front_man": "crash_test_guide",
+      "hocon": "./agent_crash_test.network.json",
+      "description": "Ask what your agentic website lets a model do without asking the visitor, run the crash test on a demo shop, and learn how to test your own site.",
+      "tags": [
+        "agentified-website",
+        "trust-and-safety",
+        "testing",
+        "infrastructure"
+      ],
+      "sample_queries": [
+        "What does the crash test tell me that reading my network file does not?",
+        "Run the crash test on the weak demo shop and explain the result.",
+        "Now run it on the fixed shop. What changed, and why?",
+        "How do I run it on my own site?",
+        "Can you certify my site as safe?"
+      ]
+    }
+  ],
+  "llm_router": {
+    "base_url": "https://api.otari.ai/api/v1",
+    "mock": false,
+    "byok_router": "https://api.otari.ai/api/v1"
+  },
+  "allowed_peers": [],
+  "peer_policy": {
+    "mode": "closed",
+    "deny_origins": [],
+    "note": "Local agent and page-local actions only. It contacts no other site."
+  },
+  "agent_mcp": {
+    "protocol": "nsdeploy-agent-mcp/v1",
+    "network": "agent_crash_test",
+    "front_man": "crash_test_guide",
+    "available": false,
+    "reason": "This is a static bundle; a public MCP facade requires an application host."
+  },
+  "theme": {
+    "primary": "#1c2024"
+  },
+  "linking": {
+    "protocol": "nsdeploy-link/v1",
+    "exports": [
+      {
+        "network": "agent_crash_test",
+        "front_man": "crash_test_guide",
+        "aliases": [
+          "agent_crash_test",
+          "crash_test_guide"
+        ],
+        "url": "agent_crash_test"
+      }
+    ],
+    "imports": [],
+    "link_updates": {
+      "mode": "browser-local"
+    }
+  },
+  "deployment": {
+    "mode": "static",
+    "self_contained_runtime": true,
+    "browser_mock": false,
+    "direct_byok": true,
+    "direct_mcp_requires_cors": true,
+    "public_mcp_facade": false
+  },
+  "actions": {
+    "version": 1,
+    "module": "./site-actions.js",
+    "bridge": "./bridge/action-bridge.html",
+    "agentTools": [
+      "get_page_state",
+      "run_demo_crash_test",
+      "get_report"
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+/* Corner Shop demo pages. */
+:root { color-scheme: light; }
+body { margin: 0 auto; max-width: 1100px; padding: 20px 16px 60px; font: 16px/1.5 system-ui, sans-serif; color: #1c2024; background: #f7f5f0; }
+h1 { font-size: 28px; margin: 12px 0 4px; }
+h2 { font-size: 18px; margin: 0 0 8px; }
+h3 { font-size: 14px; margin: 14px 0 4px; color: #4a535c; }
+a { color: #2f5d50; }
+.demo-banner { background: #1c2024; color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 14px; margin: 0; }
+.demo-banner a { color: #ffd9a8; }
+.shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 20px; }
+.shop-grid section { background: #fff; border: 1px solid #ddd8cc; border-radius: 10px; padding: 16px; }
+ul { margin: 0; padding-left: 18px; }
+li { margin: 4px 0; }
+button { font: inherit; padding: 5px 12px; border-radius: 6px; border: 1px solid #2f5d50; background: #2f5d50; color: #fff; cursor: pointer; }
+button.crash { background: #b3541e; border-color: #b3541e; font-weight: 600; padding: 8px 16px; }
+#shop-reset { background: #fff; color: #2f5d50; }
+#agent-app { --ns-primary: #2f5d50; --ns-accent: #2f5d50; }

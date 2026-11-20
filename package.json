@@ -1,0 +1,16 @@
+{
+  "name": "agent-crash-test",
+  "version": "1.0.0",
+  "description": "Run a model that says yes to everything against an agentic website, on its own page, and see which actions run without asking the visitor.",
+  "license": "MIT",
+  "author": "Mohammed Abadi",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "generate": "node tools/make-home.mjs && node tools/make-shops.mjs",
+    "build": "npm run generate && node tools/scripts/build_network.mjs site/agent_crash_test.hocon --manifest site/agent-manifest.json && node tools/scripts/build_network.mjs site/shops/corner-weak/corner_shop_weak.hocon --manifest site/shops/corner-weak/agent-manifest.json && node tools/scripts/build_network.mjs site/shops/corner-fixed/corner_shop_fixed.hocon --manifest site/shops/corner-fixed/agent-manifest.json",
+    "test": "node --test \"tests/*.test.mjs\"",
+    "serve": "node tools/scripts/serve_site.mjs site --port 8080"
+  },
+  "engines": { "node": ">=22" }
+}

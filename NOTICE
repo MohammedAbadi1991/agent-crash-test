@@ -1,0 +1,15 @@
+Agent Crash Test
+Copyright (c) 2026 Mohammed Abadi. Licensed under the MIT License (see LICENSE).
+
+This repository includes third-party work under the Apache License 2.0:
+
+- site/runtime, site/shops/corner-weak/runtime and site/shops/corner-fixed/runtime:
+  the browser runtime from the agentify-website skill of
+  https://github.com/cognizant-ai-labs/agentic-web (commit 0516537), itself a patched
+  copy of https://github.com/cognizant-ai-lab/nsdeploy. Copied unchanged. See
+  LICENSE.txt and README.md in each runtime folder, and LICENSE-APACHE-2.0.
+- tools/scripts and tools/templates: the build, serve and check scripts and the page
+  templates from the same skill, copied unchanged.
+
+Files written from those templates (site/site.js, each shop's site.js, the .hocon
+network sources and the agent-manifest.json files) are adapted from them.

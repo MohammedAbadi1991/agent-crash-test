@@ -33,3 +33,5 @@ button:focus-visible, a:focus-visible { outline: 3px solid #f0a35e; outline-offs
 #agent-app { --ns-primary: #1c2024; --ns-accent: #b3541e; }
 footer { margin-top: 60px; padding-bottom: 50px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 18px; }
 @media (max-width: 720px) { .assistant-panels { grid-template-columns: 1fr; } }
+/* Keep the whole chat, with its input, on one screen. assistant.css sets a fixed 720px. */
+main #agent-app.ns-composed-app [data-ns-slot="chat"] { height: min(720px, 68vh); }

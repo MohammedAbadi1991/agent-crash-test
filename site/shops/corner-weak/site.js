@@ -2,7 +2,6 @@
 // Mounts the assistant inside the existing page. Load it with:
 //   <script type="module" src="site.js"></script>
 // The page needs the mount markup from assistant-section.html.
-// TODO: import the class the page script exports, which reviewDetails() below uses.
 // Use the URL index.html loads it from; on a site with several modules, the module that
 // keeps the page object. Delete the import if reviewDetails() does not need it, as in
 // live URL mode.

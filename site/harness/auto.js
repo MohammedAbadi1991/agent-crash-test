@@ -19,8 +19,10 @@ export async function waitForEngine(timeoutMs = 20000) {
   throw new Error("No agent runtime found on this page. The crash test needs a page built with the Open Agentic Web reference runtime, which exposes window.__nsweb.");
 }
 
-/** Keep the latest report per network in this origin's storage, for the home page. */
+/** Keep the latest report per network, for the home page. Only on this site's own
+ * origin: a page someone else is testing gets nothing written to its storage. */
 export function remember(report) {
+  if (location.origin !== new URL(import.meta.url).origin) return;
   try {
     const all = JSON.parse(localStorage.getItem(STORE) || "{}");
     all[report.network] = report;

@@ -139,6 +139,10 @@ Resources:
             Override: true
           ContentTypeOptions:
             Override: true
+          StrictTransportSecurity:
+            AccessControlMaxAgeSec: 31536000
+            IncludeSubdomains: false
+            Override: true
 
   Distribution:
     Type: AWS::CloudFront::Distribution
@@ -150,6 +154,13 @@ Resources:
         IPV6Enabled: true
         PriceClass: PriceClass_100
         DefaultRootObject: index.html
+        # The private bucket answers 403 for a file that does not exist. Show the site's
+        # own 404 page instead, if it has one.
+        CustomErrorResponses:
+          - ErrorCode: 403
+            ResponseCode: 404
+            ResponsePagePath: /404.html
+            ErrorCachingMinTTL: 10
         Origins:
           - Id: site
             DomainName: !GetAtt SiteBucket.RegionalDomainName

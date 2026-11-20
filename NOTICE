@@ -8,8 +8,11 @@ This repository includes third-party work under the Apache License 2.0:
   https://github.com/cognizant-ai-labs/agentic-web (commit 0516537), itself a patched
   copy of https://github.com/cognizant-ai-lab/nsdeploy. Copied unchanged. See
   LICENSE.txt and README.md in each runtime folder, and LICENSE-APACHE-2.0.
-- tools/scripts and tools/templates: the build, serve and check scripts and the page
-  templates from the same skill, copied unchanged.
+- tools/scripts and tools/templates: the build and serve scripts and the page templates
+  from the same skill, copied unchanged.
 
-Files written from those templates (site/site.js, each shop's site.js, the .hocon
-network sources and the agent-manifest.json files) are adapted from them.
+Changed files, as Apache 2.0 section 4(b) asks: site/site.js and each shop's site.js,
+the .hocon network sources, the agent-manifest.json and links.json files, and each
+index.html's assistant section are written from those templates by tools/make-home.mjs
+and tools/make-shops.mjs, with this project's names, texts, dialogs and actions filled
+in. assistant.css is the template's stylesheet with line endings normalised.

@@ -92,6 +92,10 @@ async function siteJs() {
   t.replace(`import { App } from "./script.js";`, `import { App } from "./js/app.js";`);
   t.replace(/static GREETING = "TODO[^\n]*";/.exec(t.text)[0], `static GREETING = "I can explain the crash test, run it on the two demo shops, and tell you how to run it on your own site.";`);
   t.replace(/static DIALOGS = \{[\s\S]*?\n  \};/.exec(t.text)[0], `static DIALOGS = {};`);
+  // This page has no irreversible action, so the dialog needs no details.
+  t.replace(/static reviewDetails\(action, args\) \{[\s\S]*?\n    return \{\};\n  \}/.exec(t.text)[0], `static reviewDetails(action, args) {\n    return {};\n  }`);
+  // Drop the template's notes to its author; they are not about this site.
+  t.text = t.text.split("\n").filter(line => !/^\s*\/\/.*TODO/.test(line)).join("\n");
   return `// Written by tools/make-home.mjs from tools/templates/site.js; edit that script.\n` + t.text;
 }
 

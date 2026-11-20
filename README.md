@@ -36,15 +36,21 @@ On a page built with the reference runtime, the test:
 3. replaces each action's handler with a recorder, and answers every dialog with "no";
 4. reports which actions ran without asking, which asked first, what arguments reached
    them, and which other sites or MCP services the model tried to contact;
-5. puts the model, the handlers and the chat history back.
+5. puts the model, the handlers, the chat history and any remembered consent answers back.
+   The runtime's own execution log keeps the test's events until the page is reloaded.
 
 It is a dry run: nothing is submitted or changed. It needs no AI provider key, costs
-nothing, takes a few milliseconds and gives the same result every time.
+nothing, takes a few milliseconds and gives the same outcomes every time.
 
 ## Try it
 
-Open the live site and press **Run the crash test** on each demo shop. The two shops run
-the same code and differ only in how three actions are labelled.
+Open the live site and press **Run the crash test** on each demo shop. No AI key is needed
+for that. The two shops run the same shop code. They differ in how three actions are
+labelled, and in the confirmation dialogs that go with those labels.
+
+The assistant at the bottom of the page needs an AI provider key (for example a free Otari
+key), entered under **AI model settings**. Your messages and the page data it reads go to
+the LLM provider you choose there.
 
 | Action | Weak shop label | Result | Fixed shop label | Result |
 | --- | --- | --- | --- | --- |
@@ -60,7 +66,9 @@ lives in the visitor's browser.
 ## Run it on your own site
 
 Your site's actions exist only on your site's page, so the test runs there. Use a
-development copy. Add one line to the page and reload it:
+development copy with no real AI key saved in the browser: the line below loads a script
+from the live site into your page. To avoid that, copy `site/harness/` into your own
+project and import it from there. Add one line to the page and reload it:
 
 ```html
 <script type="module" src="https://d3c7h3snp0n4hj.cloudfront.net/harness/auto.js"></script>
@@ -85,6 +93,9 @@ browser.
 - Whether another website is safe to link to. It cannot run a site's own actions from
   outside that site.
 - Whether your action handlers have bugs. A dry run never calls them.
+- Anything about an action whose schema the test cannot fill. It builds arguments from
+  types, enums, lengths, minimums, dates and emails. A schema that needs more, such as a
+  pattern, makes the runtime refuse the call, and the row shows as `rejected`.
 - That a site is safe. It is one test, not a certificate.
 
 It works on pages that expose the reference runtime's engine as `window.__nsweb`, which
@@ -96,7 +107,7 @@ the runtime's `boot()` does. Other runtimes need `runCrashTest(engine)` called b
 | --- | --- |
 | `ran-without-asking` | The runtime ran the action as soon as the model called it. |
 | `asked-visitor` | The runtime opened the confirmation dialog first. The test answered no. |
-| `rejected` | The runtime refused the call, for example for arguments that do not fit the schema. |
+| `rejected` | The runtime refused the call before reaching the action, usually because the test's arguments did not fit the schema. It says nothing about the label. |
 | `not-a-tool` | Registered, but not listed in `actions.agentTools`, so a model cannot call it directly. |
 | `not-offered` | Listed, but the runtime did not offer it to this network. |
 
@@ -106,6 +117,7 @@ not a finding.
 
 ## The site as an agentic website
 
+- The network URL other sites use is `https://d3c7h3snp0n4hj.cloudfront.net/agent_crash_test`.
 - `site/agent-manifest.json` publishes one network, `agent_crash_test`, with two agents:
   the front agent `crash_test_guide`, and `report_analyst`, which it asks to read and
   compare reports.

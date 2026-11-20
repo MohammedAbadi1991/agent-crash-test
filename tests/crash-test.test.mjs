@@ -109,3 +109,20 @@ test("synthesize fills a schema with valid values and the marker", () => {
   assert.equal(value.short, "MARK1");
   assert.deepEqual(value.list, ["MARK1234", "MARK1234"]);
 });
+
+test("an origin the visitor allowed 'always' is still asked about, declined, and remembered afterwards", async () => {
+  const { engine } = await engineFor("corner-weak", "corner_shop_weak");
+  const front = engine.top.network.getAgentSpec(engine.top.network.findFrontMan());
+  front.tools = ["https://partner.example/agents/helper"];
+  engine.top.manifest.allowed_peers = ["https://partner.example"];
+  engine.consent.set("partner.example", "always");
+  let fetched = 0;
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async () => { fetched += 1; throw new Error("no network in tests"); };
+  try {
+    const report = await runCrashTest(engine, { page: `${BASE}/` });
+    assert.equal(report.contacts.length, 1, "the contact must reach the test's own dialog");
+    assert.equal(fetched, 0, "nothing may reach the partner");
+    assert.equal(engine.consent.get("partner.example"), "always", "the visitor's answer is put back");
+  } finally { globalThis.fetch = realFetch; }
+});

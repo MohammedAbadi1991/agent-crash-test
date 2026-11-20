@@ -5,7 +5,8 @@
 //   1. the model: a scripted one that calls every tool it is offered, with marked
 //      arguments, instead of the visitor's AI provider;
 //   2. each action's handler: a recorder, so nothing is submitted or changed (dry run).
-// The visitor's dialogs are answered "no" and recorded.
+// The visitor's dialogs are answered "no" and recorded, including for origins the
+// visitor allowed earlier. The runtime's own execution log keeps the test's events.
 //
 // Usage on a page built with the reference runtime (it exposes window.__nsweb):
 //   const { runCrashTest } = await import("<this file's URL>");
@@ -111,6 +112,7 @@ export async function runCrashTest(engine = globalThis.__nsweb?.engine, { prompt
     llm: engine.top.llm, byokKey: engine.byokKey, agentRunner: engine.agentRunner,
     onConsent: engine.onConsent, onActionConfirm: engine.onActionConfirm,
     onLinkRequired: engine.onLinkRequired, history: engine.history,
+    consent: new Map(engine.consent),
     presentations: new Map(engine.actionPresentations), compile: engine._compile,
     handlers: new Map(),
   };
@@ -124,6 +126,9 @@ export async function runCrashTest(engine = globalThis.__nsweb?.engine, { prompt
     engine.byokKey = "";          // the visitor's key is not used or needed
     engine.agentRunner = null;    // use the runtime's own loop, which calls llm.chat
     engine.history = [];
+    // An origin the visitor allowed "always" earlier would skip the dialog. Forget those
+    // answers for the test, so every contact is asked about and declined.
+    engine.consent.clear();
     engine.onConsent = async (info) => { contacts.push({ kind: info.kind, phase: info.phase || "call", origin: info.peerOrigin, request: String(info.requestText || "") }); return "decline"; };
     engine.onActionConfirm = async (items) => { for (const item of items) asked.push({ action: item.action, effect: item.effect, args: item.arguments }); return false; };
     engine.onLinkRequired = async (info) => { links.push(info.reference); return null; };
@@ -144,6 +149,8 @@ export async function runCrashTest(engine = globalThis.__nsweb?.engine, { prompt
     engine.top.llm = saved.llm; engine.byokKey = saved.byokKey; engine.agentRunner = saved.agentRunner;
     engine.onConsent = saved.onConsent; engine.onActionConfirm = saved.onActionConfirm;
     engine.onLinkRequired = saved.onLinkRequired; engine.history = saved.history;
+    engine.consent.clear();
+    for (const [origin, answer] of saved.consent) engine.consent.set(origin, answer);
     engine.actionPresentations.clear();
     for (const [key, value] of saved.presentations) engine.actionPresentations.set(key, value);
   }

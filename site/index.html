@@ -19,14 +19,14 @@
       <ul class="facts">
         <li>Runs in your browser, on your page</li>
         <li>Dry run: nothing is submitted or changed</li>
-        <li>No AI provider key, no cost, same result every time</li>
+        <li>No AI provider key, no cost, same outcomes every time</li>
       </ul>
     </header>
 
     <main>
       <section aria-labelledby="h-try">
         <h2 id="h-try">Try it on two demo shops</h2>
-        <p>Both shops run the same code. They differ in one thing: how the owner labelled three actions. The reference runtime asks the visitor only before actions labelled <code>irreversible</code>.</p>
+        <p>Both shops run the same shop code. They differ in how the owner labelled three actions, and in the confirmation dialogs that go with those labels. The reference runtime asks the visitor only before actions labelled <code>irreversible</code>.</p>
         <div class="shops">
           <article>
             <h3>Corner Shop, weak labels</h3>
@@ -47,7 +47,7 @@
 
       <section aria-labelledby="h-own">
         <h2 id="h-own">Run it on your own site</h2>
-        <p>Your site's actions exist only on your site's page, so the test runs there. It works on pages built with the Open Agentic Web reference runtime. Use a development copy.</p>
+        <p>Your site's actions exist only on your site's page, so the test runs there. It works on pages built with the Open Agentic Web reference runtime. Use a development copy with no real AI key saved in the browser: the line below loads a script from this site into your page. To avoid that, copy the <code>harness</code> folder from the repository into your own project.</p>
         <ol class="steps">
           <li>
             <p><strong>Add one line</strong> to the page while you develop, then reload it:</p>
@@ -71,7 +71,7 @@
             <li>Swaps the model for a scripted one that calls every tool it is offered, with marked arguments.</li>
             <li>Replaces each action's handler with a recorder, and answers every dialog with "no".</li>
             <li>Reports which actions ran without asking, which asked first, and which sites the model tried to contact.</li>
-            <li>Puts your model, handlers and chat history back.</li>
+            <li>Puts your model, handlers, chat history and remembered consent answers back. The runtime's execution log keeps the test's events until you reload.</li>
           </ul>
         </div>
         <div>
@@ -80,6 +80,7 @@
             <li>How likely a real model is to be talked into something. It shows what the page allows if it is.</li>
             <li>Whether another website is safe to link to. It cannot run a site's own actions from outside that site.</li>
             <li>Whether your action handlers have bugs. A dry run never calls them.</li>
+            <li>Anything about an action whose schema the test cannot fill, such as one with a pattern. It shows as refused.</li>
             <li>That a site is safe. It is one test, not a certificate.</li>
           </ul>
         </div>

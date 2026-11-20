@@ -166,6 +166,8 @@ function siteJs(shop, template) {
     if (action === "email_order_history") return { "Send to": args.email, Orders: page.state.orders.length };
     return {};
   }`);
+  // Drop the template's notes to its author; they are not about this site.
+  text = text.split("\n").filter(line => !/^\s*\/\/.*TODO/.test(line)).join("\n");
   return `// Written by tools/make-shops.mjs from tools/templates/site.js; edit that script.\n` + text;
 }
 

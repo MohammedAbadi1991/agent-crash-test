@@ -2,7 +2,6 @@
 // Mounts the assistant inside the existing page. Load it with:
 //   <script type="module" src="site.js"></script>
 // The page needs the mount markup from assistant-section.html.
-// TODO: import the class the page script exports, which reviewDetails() below uses.
 // Use the URL index.html loads it from; on a site with several modules, the module that
 // keeps the page object. Delete the import if reviewDetails() does not need it, as in
 // live URL mode.
@@ -199,18 +198,6 @@ export class AssistantMount {
    * :return: Details by label, {refusal: reason}, or {} when the action has none.
    */
   static reviewDetails(action, args) {
-    // TODO: return details for each irreversible action, for example:
-    // if (action === "<irreversible_action>") {
-    //   const check = App.page.checkOrder(args);
-    //   if (!check.ok) {
-    //     return {refusal: check.reason};
-    //   }
-    //   return {
-    //     "Items": check.items,
-    //     "Total": check.total,
-    //     "Name": args.name,
-    //   };
-    // }
     return {};
   }
 

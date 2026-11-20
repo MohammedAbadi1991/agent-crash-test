@@ -77,6 +77,7 @@ export function reportBody(report) {
     const detail = el("td", {}, el("code", {}, a.name));
     if (a.args && Object.keys(a.args).length) detail.append(el("div", { class: "args" }, "Model sent: ", el("code", {}, JSON.stringify(a.args))));
     if (a.error) detail.append(el("div", { class: "args" }, `Runtime said: ${a.error}`));
+    if (a.outcome === "rejected") detail.append(el("div", { class: "args" }, "The test builds arguments from the action's schema. If the schema has rules it cannot satisfy, the call is refused before the action is reached, and this row tells you nothing about the label."));
     if (a.hint && a.outcome === "ran-without-asking") detail.append(el("div", { class: "hint" }, a.hint));
     return el("tr", {}, detail, el("td", {}, a.effect), el("td", {}, el("span", { class: `badge ${outcome.tone}` }, outcome.text)));
   });

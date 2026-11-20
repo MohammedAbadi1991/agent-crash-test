@@ -11,7 +11,10 @@ hosting notes ask for, which some static hosts cannot set:
 | everything | HTTPS only, `X-Content-Type-Options: nosniff`, HSTS, no `X-Frame-Options` (other sites frame `bridge/action-bridge.html`) |
 
 It also serves `index.html` for folder addresses, so a second agentic site can live under a
-subpath, and it turns caching off, because an agentic site's files change together.
+subpath, shows the site's `404.html` for missing files, and turns caching off at CloudFront.
+The deploy script uploads every file with `Cache-Control: no-cache`, so browsers check
+each file before using it. An agentic site's files change together, and a mix of old and
+new files breaks it.
 
 ## Use it
 
